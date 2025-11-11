@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<!-- OpenManipulator Chain -->
+<robot name="open_manipulator_x" xmlns:xacro="http://ros.org/wiki/xacro">
+
+
+  <!-- Import URDF -->
+  <xacro:include
+    filename="$(find my_omx_description)/urdf/manipulator.urdf.xacro" />
+
+  <!-- Instantiate the macro -->
+  <xacro:open_manipulator_x prefix="" />
+
+  <!-- World -->
+  <link name="world" />
+
+  <!-- World fixed joint-->
+  <joint name="world_fixed" type="fixed">
+    <origin xyz="0 0 0" rpy="0 0 0" />
+    <parent link="world" />
+    <child link="link1" />
+  </joint>
+
+</robot>
