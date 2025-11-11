@@ -2,60 +2,39 @@
 <!-- OpenManipulator Chain -->
 <robot name="open_manipulator_x" xmlns:xacro="http://ros.org/wiki/xacro">
 
+  <!-- 런치 인자 선언 -->
+  <xacro:arg name="use_fake_hardware" default="true" />
 
-  <!-- Import URDF -->
-  <xacro:include
-    filename="$(find my_omx_description)/urdf/manipulator.urdf.xacro" />
+  <!-- ============================= -->
+  <!-- Include 필요한 xacro -->
+  <!-- ============================= -->
+  <xacro:include filename="$(find my_omx_description)/urdf/manipulator.urdf.xacro" />
+  <xacro:include filename="$(find my_omx_description)/ros2_control/my_omx_system.ros2_control.xacro" />
 
-  <!-- Instantiate the macro -->
+  <!-- ============================= -->
+  <!-- 매크로 호출 (모델 + ros2_control) -->
+  <!-- ============================= -->
+  <!-- 로봇 링크/조인트 정의 -->
   <xacro:open_manipulator_x prefix="" />
 
-  <!-- World -->
+  <!-- ros2_control 시스템 연결 -->
+  <xacro:my_omx_system
+    name="MyOmxSystem"
+    prefix=""
+    port_name="/dev/ttyUSB0"
+    use_fake_hardware="$(arg use_fake_hardware)"
+  />
+
+  <!-- ============================= -->
+  <!-- World 프레임 고정 -->
+  <!-- ============================= -->
   <link name="world" />
 
-  <!-- World fixed joint-->
   <joint name="world_fixed" type="fixed">
     <origin xyz="0 0 0" rpy="0 0 0" />
     <parent link="world" />
     <child link="link1" />
   </joint>
 
-  <!-- ros2_control 설정 -->
-  <ros2_control name="MyOmxSystem" type="system">
-    <hardware>
-      <plugin>fake_components/GenericSystem</plugin>
-      <param name="mock_sensor_commands">false</param>
-    </hardware>
-
-    <joint name="joint1">
-      <command_interface name="position" />
-      <state_interface name="position" />
-      <state_interface name="velocity" />
-    </joint>
-
-    <joint name="joint2">
-      <command_interface name="position" />
-      <state_interface name="position" />
-      <state_interface name="velocity" />
-    </joint>
-
-    <joint name="joint3">
-      <command_interface name="position" />
-      <state_interface name="position" />
-      <state_interface name="velocity" />
-    </joint>
-
-    <joint name="joint4">
-      <command_interface name="position" />
-      <state_interface name="position" />
-      <state_interface name="velocity" />
-    </joint>
-
-    <joint name="gripper_left_joint">
-      <command_interface name="position" />
-      <state_interface name="position" />
-      <state_interface name="velocity" />
-    </joint>
-  </ros2_control>
 
 </robot>
